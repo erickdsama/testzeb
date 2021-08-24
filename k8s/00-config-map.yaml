@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-config
+data:
+  EMAIL_SERVER: "smtp.sendgrid.net"
+  MAIL_PORT: "465"
+  MAIL_USE_TLS: "true"
+  MAIL_USERNAME: "apikey"
+  FLASK_ENV: "production"
+  FLASK_DEBUG: "1"
+  DB_USER: "zeb_test"
+  DB_NAME: "zeb_test"

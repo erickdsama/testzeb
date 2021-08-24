@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+  labels:
+    app: psql
+spec:
+  minReadySeconds: 30
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: psql
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: psql
+        tier: backend
+    spec:
+      volumes:
+        - name: psqldb
+          persistentVolumeClaim:
+            claimName: pvc-psql
+      containers:
+        - name: psql
+          image: postgres
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: psqldb
+              subPath: "postgres"
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-pwds
+                  key: dbpwd
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-config
+                  key: DB_USER
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: flask-config
+                  key: DB_NAME
+          ports:
+            - containerPort: 5432
+---
+################################
+###   SERVICE SECTION       ####
+################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: psql
+  labels:
+    app: psql
+    tier: backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+  selector:
+    app: psql
+    tier: backend

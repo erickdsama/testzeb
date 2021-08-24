@@ -1,0 +1,38 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-scaler
+spec:
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - periodSeconds: 15
+          type: Percent
+          value: 50
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          periodSeconds: 15
+          value: 50
+        - type: Pods
+          periodSeconds: 60
+          value: 4
+      selectPolicy: Max
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: petalert-api
+  minReplicas: 1
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+
+
+
