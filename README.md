@@ -44,4 +44,4 @@ to run unit test
 
 ### API DOC: 
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ca13572e231ac7af54f)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/148100/TzzEoZya)

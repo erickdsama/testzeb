@@ -56,7 +56,7 @@ spec:
                 secretKeyRef:
                   name: secret-pwds
                   key: dbpwd
-          image: erickdsama/api_zeb:v3.0.5
+          image: erickdsama/api_zeb:v3.0.6
           volumeMounts:
             - name: ssh-key
               readOnly: true
